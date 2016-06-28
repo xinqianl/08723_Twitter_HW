@@ -52,12 +52,6 @@
         NSLog(@"showDetail");
         self.detailViewController = [segue destinationViewController];
         
-//         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//         NSDate *object = self.objects[indexPath.row];
-//         EventDetailViewController *controller = (EventDetailViewController *)[[segue destinationViewController] topViewController];
-//         [controller setDetailItem:object];
-//          controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-//          controller.navigationItem.leftItemsSupplementBackButton = YES;
     }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -74,6 +68,23 @@
     
 }
 - (void)readTweet {
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    {
+       
+        
+    }
+    else
+    {
+        UIAlertView *alertView = [[UIAlertView alloc]
+                                  initWithTitle:@"Sorry"
+                                  message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
+                                  delegate:self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+        [alertView show];
+        return;
+    }
+
     //    [_posting startAnimating];
     NSArray *tweets = [[NSArray alloc]init];
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

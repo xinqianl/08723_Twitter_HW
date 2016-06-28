@@ -33,7 +33,7 @@
 //    LogMasterViewController *controller = (LogMasterViewController *)navigationController.topViewController;
     
     //Populate Data
-//    NSLog(@"%@",  self.managedObjectContext);
+    NSLog(@"%@",  self.managedObjectContext);
 //    controller.managedObjectContext = self.managedObjectContext;
 //    [Fabric with:@[[Twitter class]]];
 
