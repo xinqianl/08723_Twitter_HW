@@ -13,15 +13,12 @@
 -(void) tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
     if(tabBarController.selectedIndex == 1){
-        // Find out the path of eventlist
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"EventList" ofType:@"plist"];
         
-        // Load the file content and read the data into arrays
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"EventList" ofType:@"plist"];
         NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
         NSDictionary *myDict = [[NSDictionary alloc] init];
         myDict = [NSDictionary dictionaryWithObjects:[dict objectForKey:@"eventName"] forKeys:[dict objectForKey:@"eventDate"]];
-//        NSLog(@"Pringting event list with event date and event name pair....");
-//        NSLog(@"%@", myDict);
+
 
         
     }

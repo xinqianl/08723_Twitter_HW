@@ -16,10 +16,6 @@
 @interface SecondViewController : UITableViewController
 
 @property (strong, nonatomic) EventDetailViewController *detailViewController;
-
-//@property (strong, nonatomic) NSArray *eventName;
-//@property (strong, nonatomic) NSArray *eventDate;
-//@property (strong, nonatomic) NSDictionary *myDict;
 @property (strong, nonatomic) NSMutableArray *myArr;
 
 @end

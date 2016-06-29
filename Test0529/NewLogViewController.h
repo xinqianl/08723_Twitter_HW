@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-//#import "LogMasterViewController.h"
+
 @interface NewLogViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UILabel *endTimeLabel;
 @property (strong, nonatomic) UILabel *startLabel;
 @property (strong, nonatomic) UILabel *endLabel;
-//@property (strong, nonatomic) UILabel *errLabel;
 @property NSDate *startDate;
 @property NSDate *endDate;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;

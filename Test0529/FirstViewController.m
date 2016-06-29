@@ -20,7 +20,7 @@ NSString *info;
     // Do any additional setup after loading the view, typically from a nib.
     self.title = @"Info" ;
     NSString *andrewIdLabel = @"ANDREW ID: ";
-    NSString *andrewId = @"xinqianl ";
+    NSString *andrewId = @"[xinqianl] ";
     
     NSString *localDate = [self getCurrentTimeString:([NSDate date])];
     NSString *timeZoneName = [[NSTimeZone systemTimeZone] abbreviation];

@@ -17,11 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
     self.detailDescriptionLabel.numberOfLines = 0;
     self.detailDescriptionLabel.text = self.tweet;
-//    self.title = self.eventName;
-    //[self configureView];
+
 }
 
 - (void)didReceiveMemoryWarning {

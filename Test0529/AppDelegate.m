@@ -9,10 +9,6 @@
 #import "AppDelegate.h"
 #import "LogDetailViewController.h"
 #import "LogMasterViewController.h"
-
-//#import <Fabric/Fabric.h>
-//#import <TwitterKit/TwitterKit.h>
-
 @interface AppDelegate ()
 
 @end
@@ -21,21 +17,10 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-    //Add 3rd item from Tab Bar
-    //Add TAB BAR Controller
-    
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
     
     UINavigationController *navigationController = tabBarController.viewControllers[2];
-    
-    //Navigation Controller
-//    LogMasterViewController *controller = (LogMasterViewController *)navigationController.topViewController;
-    
-    //Populate Data
     NSLog(@"%@",  self.managedObjectContext);
-//    controller.managedObjectContext = self.managedObjectContext;
-//    [Fabric with:@[[Twitter class]]];
 
     return YES;
 }

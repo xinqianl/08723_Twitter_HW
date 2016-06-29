@@ -13,5 +13,6 @@
 @interface SearchViewController : UIViewController
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property NSMutableArray *results;
+@property (strong, nonatomic) IBOutlet UITextField *input;
 @property ResultViewController *testController;
 @end

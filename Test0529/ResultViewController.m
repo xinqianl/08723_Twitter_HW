@@ -16,26 +16,38 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"aaa");
-    NSLog(@"%@", self.results.firstObject);
-    self.thirdViewController = [[ThirdViewController alloc]init];
-    // Do any additional setup after loading the view.
+    self.results = [[NSMutableArray alloc]init];
+    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+    request.naturalLanguageQuery = self.input;
+    NSLog(@"%@", self.input);
+    request.region = _mapView.region;
+    
+    MKLocalSearch *search = [[MKLocalSearch alloc]initWithRequest:request];
+    
+    [search startWithCompletionHandler:^(MKLocalSearchResponse
+                                         *response, NSError *error) {
+        
+        if (response.mapItems.count == 0)
+            NSLog(@"No Matches");
+        else
+            
+            for (MKMapItem *item in response.mapItems)
+            {
+                [self.results addObject:item.placemark];
+                
+            }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #warning Potentially incomplete method implementation.
     
@@ -47,8 +59,6 @@
     
     return self.results.count;
 }
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
@@ -58,26 +68,13 @@
     return cell;
     
 }
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//    NSLog(@"%@",[segue identifier]);
-//    if ([[segue identifier] isEqualToString:@"show"]) {
-//        
-//        NSLog(@"show");
-//        self.thirdViewController = [segue destinationViewController];
-//        
-//    }
-//}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    ThirdViewController *thirdViewController = [storyboard instantiateViewControllerWithIdentifier:@"setting"];
     
-    
-    // self.detailViewController.detailItem =  [NSMutableDictionary dictionaryWithObject:_eventDate[indexPath.row] forKey:_eventName[indexPath.row]];
-    self.thirdViewController.myAddress.text = @"Macy";
-    self.thirdViewController.mapView = [[MKMapView alloc]init];
-    //    self.detailViewController.eventDate = _eventDate[indexPath.row];
-    
-    
-    [self.navigationController pushViewController:self.thirdViewController animated:YES];
+    thirdViewController.result = self.results[indexPath.row];
+    [self.navigationController pushViewController:thirdViewController animated:YES];
     
     
 }

@@ -11,17 +11,15 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface ThirdViewController : UIViewController <UISplitViewControllerDelegate, MKMapViewDelegate, CLLocationManagerDelegate>
-@property (strong, nonatomic) IBOutlet MKMapView *mapView;
+@property (strong, nonatomic) IBOutlet UILabel *label;
 
 @property (strong, nonatomic) IBOutlet UITextField *myAddress;
-//@property NSString *myAddress;
 @property (nonatomic, strong) CLGeocoder *geocoder;
-
-// location manager for current location
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (readonly) CLLocationCoordinate2D selectedCoordinate;
 @property (nonatomic, strong) MKPlacemark *placemark;
-
+@property (nonatomic, strong) MKPlacemark *result;
 @property (nonatomic, strong) NSArray *searchPlacemarksCache;
 @property (nonatomic, strong) NSArray *mapItemList;
 
@@ -30,7 +28,7 @@
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (strong, nonatomic) NSString *coordString;
 @property (assign, nonatomic) MKCoordinateRegion *region;
-//@property (nonatomic, strong) EventAnnotation *annotation;
 
+@property (strong, nonatomic) CLLocation *location;
 - (void)configureView;
 @end

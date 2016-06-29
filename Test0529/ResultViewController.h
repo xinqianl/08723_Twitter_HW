@@ -11,7 +11,8 @@
 #import "ThirdViewController.h"
 @interface ResultViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 @property NSMutableArray *results;
-@property ThirdViewController *thirdViewController;
+@property NSString *input;
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @end
