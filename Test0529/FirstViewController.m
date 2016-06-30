@@ -17,78 +17,33 @@ NSString *info;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    self.title = @"Info" ;
-    NSString *andrewIdLabel = @"ANDREW ID: ";
-    NSString *andrewId = @"[xinqianl] ";
-    
-    NSString *localDate = [self getCurrentTimeString:([NSDate date])];
-    NSString *timeZoneName = [[NSTimeZone systemTimeZone] abbreviation];
-    NSString *curDate = [NSString stringWithFormat:@"%@%@%@", localDate, @" ", timeZoneName];
-    NSString *dateLabel = @"CURRENT DATE: ";
-    NSString *deviceLabel = @"DEVICE MODEL & VERSION: ";
-    NSString *iOSVersion = [[UIDevice currentDevice] systemVersion];
-    NSString *device = [self platformNiceString];
-    NSString *deviceAndVersion =[NSString stringWithFormat:@"%@%@%@", device, @" ", iOSVersion];
-    
-    
-    UILabel *label1 = [[UILabel alloc]
-                       initWithFrame:CGRectMake (10.0f, 100.0f, 250.0f, 100.0f)];
-    label1.text = [NSString stringWithFormat:@"%@%@", andrewIdLabel, andrewId];
-    label1.numberOfLines=0;
-    [self.view addSubview: label1];
-    
-    UILabel *label2 = [[UILabel alloc]
-                       initWithFrame:CGRectMake (10.0f, 200.0f, 500.0f, 100.0f)];
-    label2.text = [NSString stringWithFormat:@"%@%@", dateLabel, curDate];
-    label2.numberOfLines=0;
-    [self.view addSubview: label2];
-    
-    UILabel *label3 = [[UILabel alloc]
-                       initWithFrame:CGRectMake (10.0f, 300.0f, 500.0f, 100.0f)];
-    label3.text = [NSString stringWithFormat:@"%@%@", deviceLabel, deviceAndVersion];
-    label3.numberOfLines = 0;
-    [self.view addSubview: label3];
-    
-    UIButton *tweetButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    
-    tweetButton.frame = CGRectMake(100, 400, 150, 44);
-    [tweetButton setBackgroundImage:[UIImage imageNamed:@"tweet.png"]
-                           forState:UIControlStateNormal];
-    [tweetButton addTarget:self
-                    action:@selector (tweetButtonPress)
-          forControlEvents: UIControlEventTouchUpInside];
-    
-    [self.view addSubview: tweetButton];
-    
-    
-    
-    
-    
-    info =[NSString stringWithFormat:@"%@%@%@\n%@%@\n%@%@",@"@MobileApp4 ",andrewIdLabel, andrewId, dateLabel, curDate, deviceLabel, deviceAndVersion];
-    NSLog(@"%@%@\n%@%@\n%@%@",andrewIdLabel, andrewId, dateLabel, curDate, deviceLabel, deviceAndVersion);
+    [self initialize];
 }
 -(void)tweetButtonPress{
     
-    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-    {
-        SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [tweetSheet setInitialText: info];
-        
-        
-        [self presentViewController:tweetSheet animated:YES completion:nil];
-        
-    }
-    else
-    {
-        UIAlertView *alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"Sorry"
-                                  message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
-                                  delegate:self
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil];
-        [alertView show];
-    }
+    ACAccountStore *twitter = [[ACAccountStore alloc] init];
+    ACAccountType *twAccountType = [twitter accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+//    [self check];
+    [twitter requestAccessToAccountsWithType:twAccountType options:nil completion:^(BOOL granted, NSError *error)
+     {
+        if (granted)
+        {
+            if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]){
+                [self generateAlert];
+            }
+            else
+            {
+                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                [tweetSheet setInitialText: info];
+                [self presentViewController:tweetSheet animated:YES completion:nil];
+            }
+
+        }
+        else
+        {
+            [self permissionAlert];
+        }
+    }];
 }
 
 - (NSString *)platformRawString {
@@ -173,5 +128,119 @@ NSString *info;
                           };
     return [deviceNamesByCode objectForKey:platform];
 }
+-(void)check{
+    ACAccountStore *twitter = [[ACAccountStore alloc] init];
+    ACAccountType *twAccountType = [twitter accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    ACAccount *twAccount = [[ACAccount alloc] initWithAccountType:twAccountType];
+    NSArray *accounts = [twitter accountsWithAccountType:twAccountType];
+    twAccount = [accounts lastObject];
+    NSURL *twitterURL = [[NSURL alloc] initWithString:@"https://api.twitter.com/1.1/statuses/user_timeline.json"];
+    SLRequest *requestUsersTweets = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                       requestMethod:SLRequestMethodGET
+                                                                 URL:twitterURL
+                                                          parameters:nil];
+    
+    [requestUsersTweets performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error2)
+     {
+         // The output of the request is placed in the log.
+         NSLog(@"HTTP Response: %i", [urlResponse statusCode]);
+         if([urlResponse statusCode]!=200){
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 UIAlertView *alertView = [[UIAlertView alloc]
+                                           initWithTitle:@"Sorry"
+                                           message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
+                                           delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+                 [alertView show];
+                 return;
+             });
+         }
+     }];
+     
+     }
+-(void) initialize{
+    // Do any additional setup after loading the view, typically from a nib.
+    self.title = @"Info" ;
+    NSString *andrewIdLabel = @"ANDREW ID: ";
+    NSString *andrewId = @"[xinqianl] ";
+    
+    NSString *localDate = [self getCurrentTimeString:([NSDate date])];
+    NSString *timeZoneName = [[NSTimeZone systemTimeZone] abbreviation];
+    NSString *curDate = [NSString stringWithFormat:@"%@%@%@", localDate, @" ", timeZoneName];
+    NSString *dateLabel = @"CURRENT DATE: ";
+    NSString *deviceLabel = @"DEVICE MODEL & VERSION: ";
+    NSString *iOSVersion = [[UIDevice currentDevice] systemVersion];
+    NSString *device = [self platformNiceString];
+    NSString *deviceAndVersion =[NSString stringWithFormat:@"%@%@%@", device, @" ", iOSVersion];
+    
+    
+    UILabel *label1 = [[UILabel alloc]
+                       initWithFrame:CGRectMake (10.0f, 100.0f, 250.0f, 100.0f)];
+    label1.text = [NSString stringWithFormat:@"%@%@", andrewIdLabel, andrewId];
+    label1.numberOfLines=0;
+    [self.view addSubview: label1];
+    
+    UILabel *label2 = [[UILabel alloc]
+                       initWithFrame:CGRectMake (10.0f, 200.0f, 500.0f, 100.0f)];
+    label2.text = [NSString stringWithFormat:@"%@%@", dateLabel, curDate];
+    label2.numberOfLines=0;
+    [self.view addSubview: label2];
+    
+    UILabel *label3 = [[UILabel alloc]
+                       initWithFrame:CGRectMake (10.0f, 300.0f, 500.0f, 100.0f)];
+    label3.text = [NSString stringWithFormat:@"%@%@", deviceLabel, deviceAndVersion];
+    label3.numberOfLines = 0;
+    [self.view addSubview: label3];
+    
+    UIButton *tweetButton = [UIButton buttonWithType: UIButtonTypeCustom];
+    
+    tweetButton.frame = CGRectMake(100, 400, 150, 44);
+    [tweetButton setBackgroundImage:[UIImage imageNamed:@"tweet.png"]
+                           forState:UIControlStateNormal];
+    [tweetButton addTarget:self
+                    action:@selector (tweetButtonPress)
+          forControlEvents: UIControlEventTouchUpInside];
+    
+    [self.view addSubview: tweetButton];
+    
+    
+    
+    
+    
+    info =[NSString stringWithFormat:@"%@%@%@\n%@%@\n%@%@",@"@MobileApp4 ",andrewIdLabel, andrewId, dateLabel, curDate, deviceLabel, deviceAndVersion];
+    NSLog(@"%@%@\n%@%@\n%@%@",andrewIdLabel, andrewId, dateLabel, curDate, deviceLabel, deviceAndVersion);
+}
+-(void) generateAlert{
+    {dispatch_async(dispatch_get_main_queue(), ^{
+        
+        UIAlertView *alertView = [[UIAlertView alloc]
+                                  initWithTitle:@"Sorry"
+                                  message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
+                                  delegate:self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+        [alertView show];
+        
+    });
+        return;
+    }
+}
 
+-(void) permissionAlert{
+    NSLog(@"Permission Not Granted");
+  
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Permission not granted"
+                              message:nil
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"OK", nil];
+        [alert show];
+        // code here
+    });
+    return;
+}
 @end
