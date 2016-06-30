@@ -100,6 +100,34 @@ NSString *info;
     free(machine);
     return platform;
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+- (NSString *) getCurrentTimeString: (NSDate *) nowDate{
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComponents = [gregorian components:
+                                        (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay|
+                                         NSCalendarUnitHour  | NSCalendarUnitMinute | NSCalendarUnitSecond)
+                                                    fromDate:nowDate];
+    
+    NSInteger hour = [dateComponents hour];
+    NSInteger minute = [dateComponents minute];
+    NSInteger second = [dateComponents second];
+    
+    NSInteger year = [dateComponents year];
+    NSInteger month = [dateComponents month];
+    NSInteger day = [dateComponents day];
+    
+    return [NSString stringWithFormat:@"%ld-%02ld-%02ld %02ld:%02ld:%02ld",
+            (long)year, (long) month, (long)day,(long)hour, (long)minute, (long)second];
+    
+    
+}
 //refer to http://www.techrepublic.com/blog/software-engineer/better-code-determine-device-types-and-ios-versions/
 - (NSString *)platformNiceString {
     NSString *platform = [self platformRawString];
@@ -145,33 +173,5 @@ NSString *info;
                           };
     return [deviceNamesByCode objectForKey:platform];
 }
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-- (NSString *) getCurrentTimeString: (NSDate *) nowDate{
-    
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComponents = [gregorian components:
-                                        (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay|
-                                         NSCalendarUnitHour  | NSCalendarUnitMinute | NSCalendarUnitSecond)
-                                                    fromDate:nowDate];
-    
-    NSInteger hour = [dateComponents hour];
-    NSInteger minute = [dateComponents minute];
-    NSInteger second = [dateComponents second];
-    
-    NSInteger year = [dateComponents year];
-    NSInteger month = [dateComponents month];
-    NSInteger day = [dateComponents day];
-    
-    return [NSString stringWithFormat:@"%ld-%02ld-%02ld %02ld:%02ld:%02ld",
-            (long)year, (long) month, (long)day,(long)hour, (long)minute, (long)second];
-    
-    
-}
-
 
 @end
