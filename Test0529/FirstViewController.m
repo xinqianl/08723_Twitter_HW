@@ -19,11 +19,15 @@ NSString *info;
     [super viewDidLoad];
     [self initialize];
 }
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self initialize];
+}
 -(void)tweetButtonPress{
     
     ACAccountStore *twitter = [[ACAccountStore alloc] init];
     ACAccountType *twAccountType = [twitter accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-//    [self check];
+    [self check];
     [twitter requestAccessToAccountsWithType:twAccountType options:nil completion:^(BOOL granted, NSError *error)
      {
         if (granted)
@@ -129,6 +133,7 @@ NSString *info;
     return [deviceNamesByCode objectForKey:platform];
 }
 -(void)check{
+//    NSLog(@"2");
     ACAccountStore *twitter = [[ACAccountStore alloc] init];
     ACAccountType *twAccountType = [twitter accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     ACAccount *twAccount = [[ACAccount alloc] initWithAccountType:twAccountType];
@@ -144,11 +149,11 @@ NSString *info;
      {
          // The output of the request is placed in the log.
          NSLog(@"HTTP Response: %i", [urlResponse statusCode]);
-         if([urlResponse statusCode]!=200){
+         if([urlResponse statusCode]==0){
              dispatch_async(dispatch_get_main_queue(), ^{
                  UIAlertView *alertView = [[UIAlertView alloc]
                                            initWithTitle:@"Sorry"
-                                           message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
+                                           message:@"Please make sure your device has an internet connection and you have at least one Twitter account setup"
                                            delegate:self
                                            cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
@@ -160,10 +165,13 @@ NSString *info;
      
      }
 -(void) initialize{
+    for (UIView *subUIView in self.view.subviews) {
+        [subUIView removeFromSuperview];
+    }
     // Do any additional setup after loading the view, typically from a nib.
     self.title = @"Info" ;
     NSString *andrewIdLabel = @"ANDREW ID: ";
-    NSString *andrewId = @"[xinqianl] ";
+    NSString *andrewId = @"xinqianl ";
     
     NSString *localDate = [self getCurrentTimeString:([NSDate date])];
     NSString *timeZoneName = [[NSTimeZone systemTimeZone] abbreviation];
@@ -213,10 +221,10 @@ NSString *info;
 }
 -(void) generateAlert{
     {dispatch_async(dispatch_get_main_queue(), ^{
-        
+//        NSLog(@"1");
         UIAlertView *alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Sorry"
-                                  message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
+                                  message:@"Please make sure your device has an internet connection and you have at least one Twitter account setup"
                                   delegate:self
                                   cancelButtonTitle:@"OK"
                                   otherButtonTitles:nil];
@@ -233,7 +241,7 @@ NSString *info;
     dispatch_async(dispatch_get_main_queue(), ^{
         
         UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:@"Permission not granted"
+                              initWithTitle:@"Please make sure your device has an internet connection and you have at least one Twitter account setup"
                               message:nil
                               delegate:self
                               cancelButtonTitle:@"Cancel"

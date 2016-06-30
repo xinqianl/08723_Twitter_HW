@@ -16,7 +16,13 @@
     NSLog(@"%@",self.myArr);
    
 }
-
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.myArr=[[NSMutableArray alloc]init];
+    
+    [self readTweet];
+    NSLog(@"%@",self.myArr);
+}
 - (void)didReceiveMemoryWarning {
     [self readTweet];
     [super didReceiveMemoryWarning];
@@ -131,7 +137,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
     UIAlertView *alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Sorry"
-                                  message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
+                                  message:@"Please make sure your device has an internet connection and you have at least one Twitter account setup"
                                   delegate:self
                                   cancelButtonTitle:@"OK"
                                   otherButtonTitles:nil];
@@ -143,7 +149,7 @@
     NSLog(@"Permission Not Granted");
     dispatch_async(dispatch_get_main_queue(), ^{
     UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:@"Permission not granted"
+                              initWithTitle:@"Please make sure your device has an internet connection and you have at least one Twitter account setup"
                               message:nil
                               delegate:self
                               cancelButtonTitle:@"Cancel"
@@ -156,7 +162,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertView *alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Sorry"
-                                  message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
+                                  message:@"Please make sure your device has an internet connection and you have at least one Twitter account setup"
                                   delegate:self
                                   cancelButtonTitle:@"OK"
                                   otherButtonTitles:nil];
