@@ -83,7 +83,7 @@
                          EventAnnotation *annotation = [[EventAnnotation alloc] init];
                          annotation.coordinate = self.result.coordinate;
                          annotation.title = [NSString stringWithFormat:@"%@%@%@", self.result.name, @",",address];
-
+                         self.label2.text = address;
                          [self.mapView addAnnotation:annotation];
                      }
          ];

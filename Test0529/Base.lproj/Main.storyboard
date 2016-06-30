@@ -82,10 +82,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EHm-Hn-jGG">
-                                <rect key="frame" x="20" y="126" width="343" height="417"/>
+                                <rect key="frame" x="20" y="156" width="343" height="417"/>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aS0-aB-shk">
                                 <rect key="frame" x="20" y="92" width="343" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eeR-8A-AgE">
+                                <rect key="frame" x="20" y="127" width="343" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -97,6 +103,7 @@
                     <navigationItem key="navigationItem" id="6t1-do-Y5Y"/>
                     <connections>
                         <outlet property="label" destination="aS0-aB-shk" id="rFL-Zo-gxE"/>
+                        <outlet property="label2" destination="eeR-8A-AgE" id="xXS-kt-VuG"/>
                         <outlet property="mapView" destination="EHm-Hn-jGG" id="ipY-8J-pUq"/>
                     </connections>
                 </viewController>

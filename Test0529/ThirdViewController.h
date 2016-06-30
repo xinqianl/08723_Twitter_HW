@@ -12,6 +12,7 @@
 
 @interface ThirdViewController : UIViewController <UISplitViewControllerDelegate, MKMapViewDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) IBOutlet UILabel *label;
+@property (strong, nonatomic) IBOutlet UILabel *label2;
 
 @property (strong, nonatomic) IBOutlet UITextField *myAddress;
 @property (nonatomic, strong) CLGeocoder *geocoder;
